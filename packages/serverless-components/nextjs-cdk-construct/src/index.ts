@@ -298,6 +298,8 @@ export class NextJSLambdaEdge extends Construct {
 
     const { ...defaultBehavior } = props.defaultBehavior || {};
 
+    const origin = new origins.S3Origin(this.bucket);
+
     this.distribution = new cloudfront.Distribution(
       this,
       "NextJSDistribution",
@@ -309,7 +311,7 @@ export class NextJSLambdaEdge extends Construct {
         defaultBehavior: {
           viewerProtocolPolicy:
             cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-          origin: new origins.S3Origin(this.bucket),
+          origin,
           allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
           cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
           compress: true,
@@ -323,7 +325,7 @@ export class NextJSLambdaEdge extends Construct {
                 [this.pathPattern("_next/image*")]: {
                   viewerProtocolPolicy:
                     cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                  origin: new origins.S3Origin(this.bucket),
+                  origin,
                   allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
                   cachedMethods:
                     cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
@@ -349,7 +351,7 @@ export class NextJSLambdaEdge extends Construct {
           [this.pathPattern("_next/data/*")]: {
             viewerProtocolPolicy:
               cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-            origin: new origins.S3Origin(this.bucket),
+            origin,
             allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
             cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
             compress: true,
@@ -359,7 +361,7 @@ export class NextJSLambdaEdge extends Construct {
           [this.pathPattern("_next/*")]: {
             viewerProtocolPolicy:
               cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-            origin: new origins.S3Origin(this.bucket),
+            origin,
             allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
             cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
             compress: true,
@@ -368,7 +370,7 @@ export class NextJSLambdaEdge extends Construct {
           [this.pathPattern("static/*")]: {
             viewerProtocolPolicy:
               cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-            origin: new origins.S3Origin(this.bucket),
+            origin,
             allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
             cachedMethods: cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
             compress: true,
@@ -379,7 +381,7 @@ export class NextJSLambdaEdge extends Construct {
                 [this.pathPattern("api/*")]: {
                   viewerProtocolPolicy:
                     cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                  origin: new origins.S3Origin(this.bucket),
+                  origin,
                   allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
                   cachedMethods:
                     cloudfront.CachedMethods.CACHE_GET_HEAD_OPTIONS,
